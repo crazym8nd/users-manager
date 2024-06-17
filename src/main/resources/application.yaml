@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: users-manager
+  r2dbc:
+      url: r2dbc:postgresql://localhost:5432/person?schema=person
+      username: postgres
+      password: password
+  flyway:
+    user: postgres
+    password: password
+    url: jdbc:postgresql://localhost:5432/person
+    locations: classpath:db/migration
+  mvc:
+    log-request-details: true
+server:
+  port: 8088
+logging:
+  level:
+    web: debug
+    root: info
