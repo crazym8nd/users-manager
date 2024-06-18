@@ -2,9 +2,10 @@ spring:
   application:
     name: users-manager
   r2dbc:
-      url: r2dbc:postgresql://localhost:5432/person?schema=person
-      username: postgres
-      password: password
+    url: r2dbc:postgresql://localhost:5432/
+    username: postgres
+    password: password
+    name: person
   flyway:
     user: postgres
     password: password
@@ -17,4 +18,4 @@ server:
 logging:
   level:
     web: debug
-    root: info
+    root: debug

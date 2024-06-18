@@ -22,7 +22,7 @@ configurations {
 
 repositories {
         mavenCentral()
-    maven { url 'https://jitpack.io' }
+    mavenLocal()
 }
 
 
@@ -33,7 +33,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
     implementation 'org.springframework:spring-jdbc'
-    implementation 'com.github.crazym8nd:commons-for-users-manager:449bd7794883d0cd025a5957b54405772fe3e485'
+
 
     runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'org.postgresql:r2dbc-postgresql'
@@ -44,7 +44,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
 
-
+    implementation "org.mapstruct:mapstruct:1.5.5.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'

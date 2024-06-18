@@ -1,4 +1,4 @@
-package com.vitaly.usersmanager.repository;
+package com.vitaly.usersmanager.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("users")
+@Table("person.users")
 public class UserEntity implements Persistable<UUID> {
     @Id
     private UUID id;
