@@ -1,6 +1,7 @@
 package com.vitaly.usersmanager.service.impl;
 
 import com.vitaly.usersmanager.entity.IndividualEntity;
+import com.vitaly.usersmanager.exceptionhandling.NotFoundException;
 import com.vitaly.usersmanager.repository.IndividualRepository;
 import com.vitaly.usersmanager.service.IndividualService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class IndividualServiceImpl implements IndividualService {
     public Mono<IndividualEntity> getById(UUID uuid) {
         return individualRepository.findById(uuid)
                 .doOnNext(entity -> log.warn("Entity from repository: {}", entity))
-                .map(individual -> individual);
+                .map(individual -> individual)
+                .switchIfEmpty(Mono.error(new NotFoundException("Individual with id: " + uuid + " not found")));
     }
 
     @Override

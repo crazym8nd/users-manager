@@ -26,8 +26,7 @@ public class IndividualsControllerV1 {
     public Mono<ResponseEntity<TestIndividualDto>> getIndividualById(@PathVariable UUID id) {
         return individualService.getById(id)
                 .map(individualMapper::toIndividualDto)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok);
     }
 
     //do we need to return 201 with location uri?
