@@ -30,6 +30,7 @@ public class IndividualsControllerV1 {
     }
 
     //do we need to return 201 with location uri?
+    // do we need 409 conflict repsonse for duplciate?
     @PostMapping
     public Mono<ResponseEntity<TestIndividualDto>> createIndividual(@RequestBody TestIndividualDto individualDto) {
         return individualService.save(individualMapper.toIndividualEntity(individualDto))
@@ -38,12 +39,12 @@ public class IndividualsControllerV1 {
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
-    //what status we need to return?
+    //what status we need to return? 204
     @DeleteMapping("/{id}")
     public Mono<ResponseEntity<Object>> deleteIndividual(@PathVariable UUID id) {
         return individualService.getById(id)
                 .flatMap((individual) -> individualService.delete(individual.getId()))
-                .then(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
+                .then(Mono.just(new ResponseEntity<>(HttpStatus.NO_CONTENT)))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

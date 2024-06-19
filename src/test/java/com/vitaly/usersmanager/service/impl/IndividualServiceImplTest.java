@@ -8,7 +8,6 @@ import jdk.jfr.Name;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -19,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@SpringBootTest
+
 @ExtendWith(MockitoExtension.class)
 class IndividualServiceImplTest {
 
@@ -35,23 +34,12 @@ class IndividualServiceImplTest {
         //when
         Mono<IndividualEntity> result = individualService.getById(UUID.fromString("79e7a181-37f1-44a6-b323-54edb52634b7"));
 
-        // Use StepVerifier to verify the result
+        // then
         StepVerifier.create(result)
-                .expectNextMatches(entity -> entity != null
+                .expectNextMatches(
+                        entity -> entity != null
                         && entity.getId().equals(UUID.fromString("79e7a181-37f1-44a6-b323-54edb52634b7")))
                 .verifyComplete();
-    }
-
-    @Test
-    void update() {
-    }
-
-    @Test
-    void save() {
-    }
-
-    @Test
-    void delete() {
     }
 
     @Test
