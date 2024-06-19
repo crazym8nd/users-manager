@@ -6,11 +6,9 @@ import com.vitaly.usersmanager.mapper.IndividualMapper;
 import com.vitaly.usersmanager.service.IndividualService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -32,4 +30,31 @@ public class IndividualsControllerV1 {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
+    //do we need to return 201 with location uri?
+    @PostMapping
+    public Mono<ResponseEntity<TestIndividualDto>> createIndividual(@RequestBody TestIndividualDto individualDto) {
+        return individualService.save(individualMapper.toIndividualEntity(individualDto))
+                .map(individualMapper::toIndividualDto)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.badRequest().build());
+    }
+
+    //what status we need to return?
+    @DeleteMapping("/{id}")
+    public Mono<ResponseEntity<Object>> deleteIndividual(@PathVariable UUID id) {
+        return individualService.getById(id)
+                .flatMap((individual) -> individualService.delete(individual.getId()))
+                .then(Mono.just(new ResponseEntity<>(HttpStatus.OK)))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+
+    // do we need {id} path variable?
+    @PutMapping
+    public Mono<ResponseEntity<TestIndividualDto>> updateIndividual(@RequestBody TestIndividualDto individualDto) {
+        return individualService.update(individualMapper.toIndividualEntity(individualDto))
+                .map(individualMapper::toIndividualDto)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.badRequest().build());
+    }
 }
