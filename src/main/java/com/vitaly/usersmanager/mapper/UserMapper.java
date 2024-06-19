@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-     TestUserDto toUserDto(UserEntity userEntity);
+    TestUserDto toUserDto(UserEntity userEntity);
 
     @InheritInverseConfiguration
     UserEntity toUserEntity(TestUserDto userDto);

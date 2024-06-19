@@ -36,6 +36,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Mono<UserEntity> delete(UUID uuid) {
         return userRepository.findById(uuid)
-                .flatMap(( user -> userRepository.deleteById(user.getId()).thenReturn(user)));
+                .flatMap((user -> userRepository.deleteById(user.getId()).thenReturn(user)));
     }
 }
