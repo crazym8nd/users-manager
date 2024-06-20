@@ -18,7 +18,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-
 @ExtendWith(MockitoExtension.class)
 class IndividualServiceImplTest {
 
@@ -38,7 +37,7 @@ class IndividualServiceImplTest {
         StepVerifier.create(result)
                 .expectNextMatches(
                         entity -> entity != null
-                        && entity.getId().equals(UUID.fromString("79e7a181-37f1-44a6-b323-54edb52634b7")))
+                                && entity.getId().equals(UUID.fromString("79e7a181-37f1-44a6-b323-54edb52634b7")))
                 .verifyComplete();
     }
 

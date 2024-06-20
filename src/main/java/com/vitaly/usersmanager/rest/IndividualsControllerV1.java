@@ -23,38 +23,36 @@ public class IndividualsControllerV1 {
     private final IndividualMapper individualMapper;
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<TestIndividualDto>> getIndividualById(@PathVariable UUID id) {
+    public Mono<TestIndividualDto> getIndividualById(@PathVariable UUID id) {
         return individualService.getById(id)
-                .map(individualMapper::toIndividualDto)
-                .map(ResponseEntity::ok);
+                .map(individualMapper::toIndividualDto);
     }
 
-    //do we need to return 201 with location uri?
-    // do we need 409 conflict repsonse for duplciate?
+    // do we need 409 conflict repsonse for duplciate? yes
     @PostMapping
-    public Mono<ResponseEntity<TestIndividualDto>> createIndividual(@RequestBody TestIndividualDto individualDto) {
+    public Mono<?> createIndividual(@RequestBody TestIndividualDto individualDto) {
         return individualService.save(individualMapper.toIndividualEntity(individualDto))
-                .map(individualMapper::toIndividualDto)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.badRequest().build());
+                .map(individualMapper::toIndividualDto);
     }
 
-    //what status we need to return? 204
+    //what status we need to return? 204 yes
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<Object>> deleteIndividual(@PathVariable UUID id) {
+    public Mono<?> deleteIndividual(@PathVariable UUID id) {
         return individualService.getById(id)
                 .flatMap((individual) -> individualService.delete(individual.getId()))
                 .then(Mono.just(new ResponseEntity<>(HttpStatus.NO_CONTENT)))
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
 
-    // do we need {id} path variable?
-    @PutMapping
-    public Mono<ResponseEntity<TestIndividualDto>> updateIndividual(@RequestBody TestIndividualDto individualDto) {
-        return individualService.update(individualMapper.toIndividualEntity(individualDto))
-                .map(individualMapper::toIndividualDto)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.badRequest().build());
+    // do we need {id} path variable? yes
+    @PutMapping("/{id}")
+    public Mono<?> updateIndividual(@PathVariable UUID id, @RequestBody TestIndividualDto individualDto) {
+        if (id == individualDto.getId()) {
+            return individualService.update(individualMapper.toIndividualEntity(individualDto))
+                    .map(individualMapper::toIndividualDto);
+        } else {
+            return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        }
     }
 }
