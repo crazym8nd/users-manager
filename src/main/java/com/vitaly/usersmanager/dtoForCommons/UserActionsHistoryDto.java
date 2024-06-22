@@ -1,6 +1,5 @@
 package com.vitaly.usersmanager.dtoForCommons;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -21,6 +20,6 @@ public class UserActionsHistoryDto {
     private LocalDateTime created;
     private UUID profileId;
     private String reason;
-    private JsonNode changedValues;
+    private String changedValues;
 
 }

@@ -3,7 +3,9 @@ package com.vitaly.usersmanager.rest;
 
 import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
 import com.vitaly.usersmanager.mapper.IndividualMapper;
+import com.vitaly.usersmanager.mapper.UserActionsHistoryMapper;
 import com.vitaly.usersmanager.service.IndividualService;
+import com.vitaly.usersmanager.service.UserActionsHistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ public class IndividualsControllerV1 {
 
     private final IndividualService individualService;
     private final IndividualMapper individualMapper;
+    private final UserActionsHistoryMapper userActionsHistoryMapper;
+    private final UserActionsHistoryService userActionsHistoryService;
 
 
     @GetMapping("/{id}")
@@ -56,4 +60,16 @@ public class IndividualsControllerV1 {
             return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
         }
     }
+
+
+    //testing
+    @GetMapping("/test")
+    public Mono<?> test() {
+        //String json = "{\"id\":\"af0d4d8a-6e82-4af3-97bf-330c4a556518\"}";
+
+        return userActionsHistoryService.getById(UUID.fromString("6c419b7b-cad5-455d-a62d-a301f8cfaecc"))
+                .map(userActionsHistoryMapper::toDto);
+
+    }
+
 }

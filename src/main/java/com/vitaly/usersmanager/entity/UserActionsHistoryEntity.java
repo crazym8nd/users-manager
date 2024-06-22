@@ -1,6 +1,5 @@
 package com.vitaly.usersmanager.entity;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,7 @@ public class UserActionsHistoryEntity implements Persistable<UUID> {
     private UUID profileId;
     private String reason;
 
-    private JsonNode changedValues; // TODO: how to implement this type from postgres jsonb type ??
+    private String changedValues; // TODO: how to implement this type from postgres jsonb type ??
 
     @Override
     public boolean isNew() {
