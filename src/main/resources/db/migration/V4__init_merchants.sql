@@ -5,7 +5,6 @@ CREATE TABLE person.merchants
     created      TIMESTAMP NOT NULL,
     updated      TIMESTAMP NOT NULL,
     company_name VARCHAR(32),
-    company_id   VARCHAR(32),
     email        VARCHAR(32),
     phone_number VARCHAR(32),
     verified_at  TIMESTAMP NOT NULL,

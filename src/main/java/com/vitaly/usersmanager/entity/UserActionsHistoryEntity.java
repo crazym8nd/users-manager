@@ -1,5 +1,6 @@
 package com.vitaly.usersmanager.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,27 +12,20 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("person.individuals")
-public class IndividualEntity implements Persistable<UUID> {
+@Table("person.user_actions_history")
+public class UserActionsHistoryEntity implements Persistable<UUID> {
+
     @Id
     private UUID id;
+    private LocalDateTime created;
+    private UUID profileId;
+    private String reason;
 
-    private UUID userId;
-    private String passportNumber;
-    private String phoneNumber;
-    private String email;
-    private LocalDateTime verifiedAt;
-    private LocalDateTime archivedAt;
-
-    @Override
-    public UUID getId() {
-        return id;
-    }
+    private JsonNode changedValues; // TODO: how to implement this type from postgres jsonb type ??
 
     @Override
     public boolean isNew() {

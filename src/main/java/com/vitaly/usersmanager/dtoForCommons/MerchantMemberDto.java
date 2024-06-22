@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -15,13 +14,11 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestIndividualDto {
-
+public class MerchantMemberDto {
     private UUID id;
 
     private UUID userId;
-    private String passportNumber;
-    private String phoneNumber;
-    private String email;
-    private LocalDateTime verifiedAt;
+    private UUID merchantId;
+    private String memberRole;
+
 }

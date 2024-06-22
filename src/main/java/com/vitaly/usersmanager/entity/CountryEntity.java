@@ -9,29 +9,22 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-
 
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("person.individuals")
-public class IndividualEntity implements Persistable<UUID> {
+@Table("person.countries")
+public class CountryEntity implements Persistable<Long> {
     @Id
-    private UUID id;
+    private Long id;
 
-    private UUID userId;
-    private String passportNumber;
-    private String phoneNumber;
-    private String email;
-    private LocalDateTime verifiedAt;
-    private LocalDateTime archivedAt;
-
-    @Override
-    public UUID getId() {
-        return id;
-    }
+    private LocalDateTime created;
+    private LocalDateTime updated;
+    private String name;
+    private String alpha2;
+    private String alpha3;
+    private String status;
 
     @Override
     public boolean isNew() {

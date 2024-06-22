@@ -11,27 +11,22 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("person.individuals")
-public class IndividualEntity implements Persistable<UUID> {
+@Table("person.addresses")
+public class AddressEntity implements Persistable<UUID> {
     @Id
     private UUID id;
-
-    private UUID userId;
-    private String passportNumber;
-    private String phoneNumber;
-    private String email;
-    private LocalDateTime verifiedAt;
-    private LocalDateTime archivedAt;
-
-    @Override
-    public UUID getId() {
-        return id;
-    }
+    private LocalDateTime created;
+    private LocalDateTime updated;
+    private Long countryId;
+    private String address;
+    private String zipCode;
+    private LocalDateTime archived;
+    private String city;
+    private String state;
 
     @Override
     public boolean isNew() {

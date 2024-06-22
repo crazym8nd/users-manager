@@ -1,5 +1,6 @@
 package com.vitaly.usersmanager.dtoForCommons;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -15,13 +16,11 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestIndividualDto {
-
+public class UserActionsHistoryDto {
     private UUID id;
+    private LocalDateTime created;
+    private UUID profileId;
+    private String reason;
+    private JsonNode changedValues;
 
-    private UUID userId;
-    private String passportNumber;
-    private String phoneNumber;
-    private String email;
-    private LocalDateTime verifiedAt;
 }

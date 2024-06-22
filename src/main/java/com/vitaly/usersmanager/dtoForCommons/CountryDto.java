@@ -8,20 +8,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Builder(toBuilder = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestIndividualDto {
+public class CountryDto {
+    private Long id;
 
-    private UUID id;
+    private LocalDateTime created;
+    private LocalDateTime updated;
+    private String name;
+    private String alpha2;
+    private String alpha3;
+    private String status;
 
-    private UUID userId;
-    private String passportNumber;
-    private String phoneNumber;
-    private String email;
-    private LocalDateTime verifiedAt;
 }

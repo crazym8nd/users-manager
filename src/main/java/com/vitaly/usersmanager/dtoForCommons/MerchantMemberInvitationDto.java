@@ -15,13 +15,14 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestIndividualDto {
-
+public class MerchantMemberInvitationDto {
     private UUID id;
-
-    private UUID userId;
-    private String passportNumber;
-    private String phoneNumber;
+    private LocalDateTime created;
+    private LocalDateTime expires;
+    private UUID merchantId;
+    private String firstName;
+    private String lastName;
     private String email;
-    private LocalDateTime verifiedAt;
+    private String status;
+
 }
