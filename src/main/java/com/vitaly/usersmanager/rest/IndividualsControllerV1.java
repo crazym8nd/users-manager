@@ -22,17 +22,18 @@ public class IndividualsControllerV1 {
     private final IndividualService individualService;
     private final IndividualMapper individualMapper;
 
+
     @GetMapping("/{id}")
     public Mono<TestIndividualDto> getIndividualById(@PathVariable UUID id) {
         return individualService.getById(id)
-                .map(individualMapper::toIndividualDto);
+                .map(individualMapper::toDto);
     }
 
     // do we need 409 conflict repsonse for duplciate? yes
     @PostMapping
     public Mono<?> createIndividual(@RequestBody TestIndividualDto individualDto) {
-        return individualService.save(individualMapper.toIndividualEntity(individualDto))
-                .map(individualMapper::toIndividualDto);
+        return individualService.save(individualMapper.toEntity(individualDto))
+                .map(individualMapper::toDto);
     }
 
     //what status we need to return? 204 yes
@@ -49,8 +50,8 @@ public class IndividualsControllerV1 {
     @PutMapping("/{id}")
     public Mono<?> updateIndividual(@PathVariable UUID id, @RequestBody TestIndividualDto individualDto) {
         if (id == individualDto.getId()) {
-            return individualService.update(individualMapper.toIndividualEntity(individualDto))
-                    .map(individualMapper::toIndividualDto);
+            return individualService.update(individualMapper.toEntity(individualDto))
+                    .map(individualMapper::toDto);
         } else {
             return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
         }
