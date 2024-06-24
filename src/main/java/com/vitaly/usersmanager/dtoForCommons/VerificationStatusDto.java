@@ -17,8 +17,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class VerificationStatusDto {
     private UUID id;
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private UUID userId;
     private String userType;
     private String details;

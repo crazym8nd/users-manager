@@ -21,14 +21,14 @@ public class MerchantEntity implements Persistable<UUID> {
    private UUID id;
 
    private UUID creatorId;
-   private LocalDateTime created;
-   private LocalDateTime updated;
-   private String companyName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
+   private String merchantName;
    private String email;
    private String phoneNumber;
    private LocalDateTime verifiedAt;
    private LocalDateTime archivedAt;
-   private String status;
    private Boolean filled;
 
     @Override

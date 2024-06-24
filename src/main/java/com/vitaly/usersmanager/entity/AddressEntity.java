@@ -19,14 +19,16 @@ import java.util.UUID;
 public class AddressEntity implements Persistable<UUID> {
     @Id
     private UUID id;
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
     private Long countryId;
     private String address;
     private String zipCode;
-    private LocalDateTime archived;
+    private LocalDateTime archivedAt;
     private String city;
     private String state;
+
 
     @Override
     public boolean isNew() {

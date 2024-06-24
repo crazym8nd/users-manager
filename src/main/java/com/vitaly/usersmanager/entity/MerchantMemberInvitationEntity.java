@@ -19,13 +19,15 @@ import java.util.UUID;
 public class MerchantMemberInvitationEntity implements Persistable<UUID> {
   @Id
   private UUID id;
-  private LocalDateTime created;
-  private LocalDateTime expires;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+  private EntityStatus status;
+  private LocalDateTime expiresAt;
   private UUID merchantId;
   private String firstName;
   private String lastName;
   private String email;
-  private String status;
+
 
     @Override
     public boolean isNew() {

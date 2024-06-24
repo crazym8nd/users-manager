@@ -17,8 +17,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class MerchantMemberInvitationDto {
     private UUID id;
-    private LocalDateTime created;
-    private LocalDateTime expires;
+    private LocalDateTime createdAt;
+    private LocalDateTime expiresAt;
     private UUID merchantId;
     private String firstName;
     private String lastName;

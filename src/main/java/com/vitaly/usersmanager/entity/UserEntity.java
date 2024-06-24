@@ -22,13 +22,12 @@ public class UserEntity implements Persistable<UUID> {
     private UUID id;
 
     private String secretKey;
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
     private String firstName;
     private String lastName;
     private LocalDateTime verifiedAt;
-    private LocalDateTime archivedAt;
-    private String status;
     private boolean filled;
     private UUID addressId;
 

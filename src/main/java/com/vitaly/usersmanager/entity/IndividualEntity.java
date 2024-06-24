@@ -26,7 +26,9 @@ public class IndividualEntity implements Persistable<UUID> {
     private String phoneNumber;
     private String email;
     private LocalDateTime verifiedAt;
-    private LocalDateTime archivedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
 
     @Override
     public UUID getId() {

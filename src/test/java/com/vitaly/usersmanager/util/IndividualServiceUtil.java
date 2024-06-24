@@ -16,7 +16,6 @@ public class IndividualServiceUtil {
                 .phoneNumber("79991234567")
                 .email("test@email.com")
                 .verifiedAt(LocalDateTime.now())
-                .archivedAt(LocalDateTime.now())
                 .build());
     }
 }

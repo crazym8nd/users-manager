@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -22,6 +23,9 @@ public class MerchantMemberEntity implements Persistable<UUID> {
     private UUID userId;
     private UUID merchantId;
     private String memberRole;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
 
     @Override
     public boolean isNew() {

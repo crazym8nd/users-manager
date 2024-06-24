@@ -2,13 +2,14 @@ CREATE TABLE person.users
 (
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     secret_key  VARCHAR(32),
-    created     TIMESTAMP NOT NULL,
-    updated     TIMESTAMP NOT NULL,
-    first_name  VARCHAR(32),
-    last_name   VARCHAR(32),
-    verified_at TIMESTAMP NOT NULL,
-    archived_at TIMESTAMP NOT NULL,
-    status      VARCHAR(64),
-    filled      BOOLEAN,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    first_name  VARCHAR(50),
+    last_name   VARCHAR(50),
+    verified_at TIMESTAMP,
+    phone_number    VARCHAR(20),
+    email           VARCHAR(32),
+    status entity_status,
+    filled      BOOLEAN DEFAULT false,
     address_id  UUID REFERENCES person.addresses (id)
 );

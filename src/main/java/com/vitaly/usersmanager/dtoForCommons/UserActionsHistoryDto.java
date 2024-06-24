@@ -17,9 +17,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserActionsHistoryDto {
     private UUID id;
-    private LocalDateTime created;
-    private UUID profileId;
+    private LocalDateTime createdAt;
+    private UUID userId;
     private String reason;
+
     private String changedValues;
 
 }

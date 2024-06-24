@@ -6,6 +6,7 @@ import com.vitaly.usersmanager.mapper.IndividualMapper;
 import com.vitaly.usersmanager.mapper.UserActionsHistoryMapper;
 import com.vitaly.usersmanager.service.IndividualService;
 import com.vitaly.usersmanager.service.UserActionsHistoryService;
+import com.vitaly.usersmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class IndividualsControllerV1 {
 
     private final IndividualService individualService;
     private final IndividualMapper individualMapper;
+    private final UserService userService;
     private final UserActionsHistoryMapper userActionsHistoryMapper;
     private final UserActionsHistoryService userActionsHistoryService;
 
@@ -65,10 +67,9 @@ public class IndividualsControllerV1 {
     //testing
     @GetMapping("/test")
     public Mono<?> test() {
-        //String json = "{\"id\":\"af0d4d8a-6e82-4af3-97bf-330c4a556518\"}";
+        //String json = "{\"id\":\"3943c704-f9ae-473b-a282-ad99a2ead223\"}";
 
-        return userActionsHistoryService.getById(UUID.fromString("6c419b7b-cad5-455d-a62d-a301f8cfaecc"))
-                .map(userActionsHistoryMapper::toDto);
+        return userService.getById(UUID.fromString("3943c704-f9ae-473b-a282-ad99a2ead223"));
 
     }
 

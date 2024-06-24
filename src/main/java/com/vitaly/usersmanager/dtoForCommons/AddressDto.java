@@ -17,12 +17,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AddressDto {
     private UUID id;
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Long countryId;
     private String address;
     private String zipCode;
-    private LocalDateTime archived;
+    private LocalDateTime archivedAt;
     private String city;
     private String state;
 

@@ -20,8 +20,10 @@ public class UserActionsHistoryEntity implements Persistable<UUID> {
 
     @Id
     private UUID id;
-    private LocalDateTime created;
-    private UUID profileId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
+    private UUID userId;
     private String reason;
 
     private String changedValues; // TODO: how to implement this type from postgres jsonb type ??

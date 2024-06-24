@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 public class CountryDto {
     private Long id;
 
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private String name;
     private String alpha2;
     private String alpha3;

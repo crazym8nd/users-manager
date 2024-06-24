@@ -19,12 +19,12 @@ public class CountryEntity implements Persistable<Long> {
     @Id
     private Long id;
 
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
     private String name;
     private String alpha2;
     private String alpha3;
-    private String status;
 
     @Override
     public boolean isNew() {

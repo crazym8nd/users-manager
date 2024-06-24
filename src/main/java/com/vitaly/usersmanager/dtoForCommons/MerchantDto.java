@@ -19,9 +19,9 @@ public class MerchantDto {
     private UUID id;
 
     private UUID creatorId;
-    private LocalDateTime created;
-    private LocalDateTime updated;
-    private String companyName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String merchantName;
     private String email;
     private String phoneNumber;
     private LocalDateTime verifiedAt;

@@ -16,7 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TestIndividualDto {
-
     private UUID id;
 
     private UUID userId;
