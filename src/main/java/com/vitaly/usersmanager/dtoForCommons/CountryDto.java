@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Builder(toBuilder = true)
 @Data
@@ -16,12 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CountryDto {
     private Long id;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private String name;
     private String alpha2;
     private String alpha3;
-    private String status;
 
 }

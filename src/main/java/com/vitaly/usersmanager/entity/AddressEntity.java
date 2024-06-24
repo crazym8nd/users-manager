@@ -25,7 +25,6 @@ public class AddressEntity implements Persistable<UUID> {
     private Long countryId;
     private String address;
     private String zipCode;
-    private LocalDateTime archivedAt;
     private String city;
     private String state;
 

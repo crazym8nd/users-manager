@@ -28,7 +28,6 @@ public class MerchantEntity implements Persistable<UUID> {
    private String email;
    private String phoneNumber;
    private LocalDateTime verifiedAt;
-   private LocalDateTime archivedAt;
    private Boolean filled;
 
     @Override

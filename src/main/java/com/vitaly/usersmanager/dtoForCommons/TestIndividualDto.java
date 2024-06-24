@@ -23,5 +23,4 @@ public class TestIndividualDto {
     private String phoneNumber;
     private String email;
     private LocalDateTime verifiedAt;
-    private LocalDateTime archivedAt;
 }

@@ -18,15 +18,10 @@ import java.util.UUID;
 public class TestUserDto {
 
     private UUID id;
-
     private String secretKey;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private String firstName;
     private String lastName;
     private LocalDateTime verifiedAt;
-    private LocalDateTime archivedAt;
-    private String status;
     private boolean filled;
     private UUID addressId;
 
