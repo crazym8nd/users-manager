@@ -1,6 +1,8 @@
 package com.vitaly.usersmanager.service.impl;
 
+import com.vitaly.usersmanager.entity.EntityStatus;
 import com.vitaly.usersmanager.entity.UserEntity;
+import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
 import com.vitaly.usersmanager.repository.UserRepository;
 import com.vitaly.usersmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +32,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<UserEntity> save(UserEntity userEntity) {
-        return userRepository.save(userEntity);
+        return checkEmailForUnique(userEntity.getEmail())
+                .then(checkPhoneForUnique(userEntity.getPhoneNumber()))
+                .then(userRepository.save(userEntity.toBuilder()
+                                .status(EntityStatus.ACTIVE)
+                        .build()));
     }
 
     @Override
@@ -38,4 +44,28 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(uuid)
                 .flatMap((user -> userRepository.deleteById(user.getId()).thenReturn(user)));
     }
+
+    @Override
+    public Mono<Boolean> checkEmailForUnique(String email) {
+        return userRepository.existsByEmail(email)
+                .flatMap(exists -> {
+                    if (exists) {
+                        return Mono.error(new UserAlreadyExistsException("You already registered. Please login."));
+                    } else {
+                        return Mono.just(false);
+                    }
+                });
+    }
+
+    @Override
+    public Mono<Boolean> checkPhoneForUnique(String phoneNumber) {
+        return userRepository.existsByPhoneNumber(phoneNumber)
+                .flatMap(exists -> {
+                    if (exists) {
+                        return Mono.error(new UserAlreadyExistsException("You already registered. Please login."));
+                    } else {
+                        return Mono.just(false);
+                    }
+                });
+        }
 }

@@ -6,5 +6,5 @@ CREATE TABLE person.countries
     name    VARCHAR(100),
     alpha2  VARCHAR(2),
     alpha3  VARCHAR(3),
-    status entity_status
+    status VARCHAR(8)
 );

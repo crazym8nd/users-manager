@@ -23,8 +23,6 @@ public class IndividualEntity implements Persistable<UUID> {
 
     private UUID userId;
     private String passportNumber;
-    private String phoneNumber;
-    private String email;
     private LocalDateTime verifiedAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -37,6 +35,6 @@ public class IndividualEntity implements Persistable<UUID> {
 
     @Override
     public boolean isNew() {
-        return (id == null);
+        return (createdAt == null);
     }
 }

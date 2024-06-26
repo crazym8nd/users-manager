@@ -1,5 +1,6 @@
 package com.vitaly.usersmanager.service.impl;
 
+import com.vitaly.usersmanager.entity.EntityStatus;
 import com.vitaly.usersmanager.entity.IndividualEntity;
 import com.vitaly.usersmanager.exceptionhandling.NotFoundException;
 import com.vitaly.usersmanager.repository.IndividualRepository;
@@ -33,7 +34,9 @@ public class IndividualServiceImpl implements IndividualService {
 
     @Override
     public Mono<IndividualEntity> save(IndividualEntity individualEntity) {
-        return individualRepository.save(individualEntity);
+        return individualRepository.save(individualEntity.toBuilder()
+                        .status(EntityStatus.ACTIVE)
+                .build());
     }
 
     @Override

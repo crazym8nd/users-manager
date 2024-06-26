@@ -25,6 +25,8 @@ public class UserEntity implements Persistable<UUID> {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private EntityStatus status;
+    private String phoneNumber;
+    private String email;
     private String firstName;
     private String lastName;
     private LocalDateTime verifiedAt;
@@ -39,6 +41,6 @@ public class UserEntity implements Persistable<UUID> {
 
     @Override
     public boolean isNew() {
-        return (id == null);
+        return (createdAt == null);
     }
 }

@@ -1,4 +1,4 @@
-package com.vitaly.usersmanager.dtoForCommons;
+package com.vitaly.usersmanager.dtoForCommons.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -15,10 +14,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestIndividualDto {
-    private UUID id;
-
-    private UUID userId;
-    private String passportNumber;
-    private LocalDateTime verifiedAt;
+public class RegistrationResponse {
+    private UUID individualId;
+    private String message;
 }

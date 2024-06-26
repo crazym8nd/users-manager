@@ -17,7 +17,7 @@ import java.util.UUID;
 public class VerificationStatusDto {
     private UUID id;
     private UUID userId;
-    private String userType;
+    private String userType; // individual | merchant
     private String details;
     private String verificationStatus;
 }

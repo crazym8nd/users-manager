@@ -1,7 +1,7 @@
 CREATE TABLE person.user_actions_history
 (
     id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    status entity_status,
+    status VARCHAR(8),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id     UUID REFERENCES person.users (id),

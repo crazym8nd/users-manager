@@ -13,8 +13,6 @@ public class IndividualServiceUtil {
                 .id(UUID.fromString("79e7a181-37f1-44a6-b323-54edb52634b7"))
                 .userId(UUID.fromString("86b38d11-e9b5-433f-bd0b-c79143996a8b"))
                 .passportNumber("1234123456")
-                .phoneNumber("79991234567")
-                .email("test@email.com")
                 .verifiedAt(LocalDateTime.now())
                 .build());
     }

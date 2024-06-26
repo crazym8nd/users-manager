@@ -23,7 +23,7 @@ public class VerificationStatusEntity implements Persistable<UUID> {
     private LocalDateTime updatedAt;
     private EntityStatus status;
     private UUID userId;
-    private String userType;
+    private String userType; // individual | merchant
     private String details;
     private String verificationStatus;
 

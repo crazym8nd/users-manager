@@ -8,6 +8,6 @@ CREATE TABLE person.merchants
     email        VARCHAR(32),
     phone_number VARCHAR(32),
     verified_at  TIMESTAMP,
-    status entity_status,
+    status VARCHAR(8),
     filled       BOOLEAN default false
 );
