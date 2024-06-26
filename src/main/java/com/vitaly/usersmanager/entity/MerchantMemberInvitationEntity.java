@@ -17,20 +17,20 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table("person.merchant_member_invitations")
 public class MerchantMemberInvitationEntity implements Persistable<UUID> {
-  @Id
-  private UUID id;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
-  private EntityStatus status;
-  private LocalDateTime expiresAt;
-  private UUID merchantId;
-  private String firstName;
-  private String lastName;
-  private String email;
+    @Id
+    private UUID id;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
+    private LocalDateTime expiresAt;
+    private UUID merchantId;
+    private String firstName;
+    private String lastName;
+    private String email;
 
 
-  @Override
-  public boolean isNew() {
-    return (createdAt == null);
-  }
+    @Override
+    public boolean isNew() {
+        return (createdAt == null);
+    }
 }

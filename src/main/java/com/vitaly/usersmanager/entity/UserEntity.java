@@ -34,7 +34,7 @@ public class UserEntity implements Persistable<UUID> {
     private boolean filled;
     private UUID addressId;
 
-   @Transient
+    @Transient
     private AddressEntity address;
 
 

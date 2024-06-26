@@ -17,18 +17,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table("person.merchants")
 public class MerchantEntity implements Persistable<UUID> {
-   @Id
-   private UUID id;
+    @Id
+    private UUID id;
 
-   private UUID creatorId;
+    private UUID creatorId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private EntityStatus status;
-   private String merchantName;
-   private String email;
-   private String phoneNumber;
-   private LocalDateTime verifiedAt;
-   private Boolean filled;
+    private String merchantName;
+    private String email;
+    private String phoneNumber;
+    private LocalDateTime verifiedAt;
+    private Boolean filled;
 
     @Override
     public boolean isNew() {

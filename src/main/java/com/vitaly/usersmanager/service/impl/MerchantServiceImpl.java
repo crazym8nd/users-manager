@@ -16,6 +16,7 @@ import java.util.UUID;
 public class MerchantServiceImpl implements MerchantService {
 
     private final MerchantRepository merchantRepository;
+
     @Override
     public Mono<MerchantEntity> getById(UUID uuid) {
         return merchantRepository.findById(uuid);

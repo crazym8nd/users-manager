@@ -3,13 +3,13 @@ package com.vitaly.usersmanager.rest;
 
 import com.vitaly.usersmanager.dtoForCommons.IndividualRegistrationDto;
 import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
-import com.vitaly.usersmanager.dtoForCommons.TestUserDto;
 import com.vitaly.usersmanager.dtoForCommons.response.IndividualInfoResponse;
 import com.vitaly.usersmanager.dtoForCommons.response.RegistrationResponse;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
 import com.vitaly.usersmanager.mapper.IndividualMapper;
 import com.vitaly.usersmanager.mapper.UserMapper;
 import com.vitaly.usersmanager.service.IndividualService;
+import com.vitaly.usersmanager.service.PersonService;
 import com.vitaly.usersmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +31,7 @@ public class IndividualsControllerV1 {
     private final IndividualMapper individualMapper;
     private final UserService userService;
     private final UserMapper userMapper;
+    private final PersonService personService;
 
 
     @GetMapping("/{id}")
@@ -49,10 +50,10 @@ public class IndividualsControllerV1 {
     @PostMapping
     public Mono<RegistrationResponse> createIndividual(@RequestBody IndividualRegistrationDto dtoForRegistration) {
         return Mono.just(dtoForRegistration)
-                .map(this::extractUserDto)
+                .map(personService::extractUserDto)
                 .flatMap(userForRegistration -> userService.save(userMapper.toEntity(userForRegistration))
                         .flatMap(savedUser -> {
-                            TestIndividualDto individualForRegistration = extractIndividualDto(dtoForRegistration);
+                            TestIndividualDto individualForRegistration = personService.extractIndividualDto(dtoForRegistration);
                             individualForRegistration.setUserId(savedUser.getId());
                             return individualService.save(individualMapper.toEntity(individualForRegistration))
                                     .thenReturn(RegistrationResponse.builder()
@@ -75,30 +76,7 @@ public class IndividualsControllerV1 {
 
 
     @PutMapping("/{id}")
-    public Mono<?> updateIndividual(@PathVariable UUID id, @RequestBody TestIndividualDto individualDto) {
-        if (id == individualDto.getId()) {
-            return individualService.update(individualMapper.toEntity(individualDto))
-                    .map(individualMapper::toDto);
-        } else {
-            return Mono.just(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-        }
-    }
-
-    private TestUserDto extractUserDto (IndividualRegistrationDto dtoForRegistration){
-        return TestUserDto.builder()
-                .id(UUID.randomUUID())
-                .secretKey(dtoForRegistration.getSecretKey())
-                .phoneNumber(dtoForRegistration.getPhoneNumber())
-                .email(dtoForRegistration.getEmail())
-                .firstName(dtoForRegistration.getFirstName())
-                .lastName(dtoForRegistration.getLastName())
-                .build();
-    }
-
-    private TestIndividualDto extractIndividualDto (IndividualRegistrationDto dtoForRegistration){
-        return TestIndividualDto.builder()
-                .id(UUID.randomUUID())
-                .passportNumber(dtoForRegistration.getPassportNumber())
-                .build();
+    public Mono<?> updateIndividual(@PathVariable UUID id, @RequestBody IndividualInfoResponse individualInfoResponse) {
+        return personService.updateInfo(individualInfoResponse);
     }
 }

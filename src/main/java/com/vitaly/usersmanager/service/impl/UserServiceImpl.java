@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
                 .map(user -> user);
     }
 
-  @Override
+    @Override
     public Mono<UserEntity> getByIdWithAddress(UUID uuid) {
         return userRepository.findById(uuid)
                 .flatMap(userEntity -> addressService.getByIdWithCountry(userEntity.getAddressId())
@@ -40,7 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<UserEntity> update(UserEntity userEntity) {
-        return userRepository.save(userEntity);
+        return userRepository.save(userEntity.toBuilder()
+                .updatedAt(LocalDateTime.now())
+                .build());
     }
 
     @Override
@@ -48,7 +51,7 @@ public class UserServiceImpl implements UserService {
         return checkEmailForUnique(userEntity.getEmail())
                 .then(checkPhoneForUnique(userEntity.getPhoneNumber()))
                 .then(userRepository.save(userEntity.toBuilder()
-                                .status(EntityStatus.ACTIVE)
+                        .status(EntityStatus.ACTIVE)
                         .build()));
     }
 
@@ -80,5 +83,5 @@ public class UserServiceImpl implements UserService {
                         return Mono.just(false);
                     }
                 });
-        }
+    }
 }

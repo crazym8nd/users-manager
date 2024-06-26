@@ -10,14 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class IndividualServiceImpl implements IndividualService {
-
     private final IndividualRepository individualRepository;
+
 
     @Override
     public Mono<IndividualEntity> getById(UUID uuid) {
@@ -29,13 +30,15 @@ public class IndividualServiceImpl implements IndividualService {
 
     @Override
     public Mono<IndividualEntity> update(IndividualEntity individualEntity) {
-        return individualRepository.save(individualEntity);
+        return individualRepository.save(individualEntity.toBuilder()
+                .updatedAt(LocalDateTime.now())
+                .build());
     }
 
     @Override
     public Mono<IndividualEntity> save(IndividualEntity individualEntity) {
         return individualRepository.save(individualEntity.toBuilder()
-                        .status(EntityStatus.ACTIVE)
+                .status(EntityStatus.ACTIVE)
                 .build());
     }
 
@@ -44,5 +47,4 @@ public class IndividualServiceImpl implements IndividualService {
         return individualRepository.findById(uuid)
                 .flatMap((individual -> individualRepository.deleteById(individual.getId()).thenReturn(individual)));
     }
-
 }
