@@ -3,7 +3,7 @@ package com.vitaly.usersmanager.service.impl;
 import com.vitaly.usersmanager.dtoForCommons.IndividualRegistrationDto;
 import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
 import com.vitaly.usersmanager.dtoForCommons.TestUserDto;
-import com.vitaly.usersmanager.dtoForCommons.response.IndividualInfoResponse;
+import com.vitaly.usersmanager.dtoForCommons.UpdateRequestIndividualDto;
 import com.vitaly.usersmanager.entity.IndividualEntity;
 import com.vitaly.usersmanager.entity.UserEntity;
 import com.vitaly.usersmanager.mapper.IndividualMapper;
@@ -28,12 +28,12 @@ public class PersonServiceImpl implements PersonService {
     private final UserMapper userMapper;
 
     @Override
-    public Mono<IndividualInfoResponse> updateInfo(IndividualInfoResponse individualInfoResponse) {
-        UUID userId = individualInfoResponse.getTestUserDto().getId();
-        UUID individualId = individualInfoResponse.getTestIndividualDto().getId();
+    public Mono<UpdateRequestIndividualDto> updateInfo(UpdateRequestIndividualDto updateReqeustIndividualDto) {
+        UUID userId = updateReqeustIndividualDto.getTestUserDto().getId();
+        UUID individualId = updateReqeustIndividualDto.getTestIndividualDto().getId();
 
-        UserEntity newUserInfo = userMapper.toEntity(individualInfoResponse.getTestUserDto());
-        IndividualEntity newIndividualInfo = individualMapper.toEntity(individualInfoResponse.getTestIndividualDto());
+        UserEntity newUserInfo = userMapper.toEntity(updateReqeustIndividualDto.getTestUserDto());
+        IndividualEntity newIndividualInfo = individualMapper.toEntity(updateReqeustIndividualDto.getTestIndividualDto());
 
         return userService.getByIdWithAddress(userId)
                 .flatMap(userToBeUpdated -> userService.update(
@@ -51,8 +51,8 @@ public class PersonServiceImpl implements PersonService {
                                         .passportNumber(newIndividualInfo.getPassportNumber())
                                         .build()
                         )))
-                .thenReturn(individualInfoResponse);
-              //  .onErrorMap(throwable -> new FailedToUpdateInfoException("Failed to update info"));
+                .thenReturn(updateReqeustIndividualDto);
+        //  .onErrorMap(throwable -> new FailedToUpdateInfoException("Failed to update info"));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class PersonServiceImpl implements PersonService {
                 .build();
     }
 
-@Override
+    @Override
     public TestIndividualDto extractIndividualDto(IndividualRegistrationDto dtoForRegistration) {
         return TestIndividualDto.builder()
                 .id(UUID.randomUUID())

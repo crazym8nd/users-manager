@@ -3,6 +3,7 @@ package com.vitaly.usersmanager.rest;
 
 import com.vitaly.usersmanager.dtoForCommons.IndividualRegistrationDto;
 import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
+import com.vitaly.usersmanager.dtoForCommons.UpdateRequestIndividualDto;
 import com.vitaly.usersmanager.dtoForCommons.response.IndividualInfoResponse;
 import com.vitaly.usersmanager.dtoForCommons.response.RegistrationResponse;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
@@ -76,7 +77,11 @@ public class IndividualsControllerV1 {
 
 
     @PutMapping("/{id}")
-    public Mono<?> updateIndividual(@PathVariable UUID id, @RequestBody IndividualInfoResponse individualInfoResponse) {
-        return personService.updateInfo(individualInfoResponse);
+    public Mono<?> updateIndividual(@PathVariable UUID id, @RequestBody UpdateRequestIndividualDto updateIndividualDto) {
+        if (id.equals(updateIndividualDto.getTestIndividualDto().getId())) {
+            return personService.updateInfo(updateIndividualDto);
+        } else {
+            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        }
     }
 }
