@@ -32,6 +32,6 @@ public class MerchantEntity implements Persistable<UUID> {
 
     @Override
     public boolean isNew() {
-        return (id == null);
+        return (createdAt == null);
     }
 }

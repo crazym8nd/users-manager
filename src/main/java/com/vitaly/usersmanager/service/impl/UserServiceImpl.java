@@ -3,6 +3,7 @@ package com.vitaly.usersmanager.service.impl;
 import com.vitaly.usersmanager.entity.EntityStatus;
 import com.vitaly.usersmanager.entity.UserEntity;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
+import com.vitaly.usersmanager.repository.AddressRepository;
 import com.vitaly.usersmanager.repository.UserRepository;
 import com.vitaly.usersmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final AddressRepository addressRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -24,6 +26,17 @@ public class UserServiceImpl implements UserService {
                 .doOnNext(entity -> log.warn("Entity from repository: {}", entity))
                 .map(user -> user);
     }
+
+  @Override
+    public Mono<UserEntity> getByIdWithAddress(UUID uuid) {
+        return userRepository.findById(uuid)
+                .flatMap(userEntity -> addressRepository.findById(userEntity.getAddressId())
+                        .map(addressEntity -> {
+                            userEntity.setAddress(addressEntity);
+                            return userEntity;
+                        }));
+    }
+
 
     @Override
     public Mono<UserEntity> update(UserEntity userEntity) {

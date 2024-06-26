@@ -4,6 +4,7 @@ package com.vitaly.usersmanager.rest;
 import com.vitaly.usersmanager.dtoForCommons.IndividualRegistrationDto;
 import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
 import com.vitaly.usersmanager.dtoForCommons.TestUserDto;
+import com.vitaly.usersmanager.dtoForCommons.response.IndividualInfoResponse;
 import com.vitaly.usersmanager.dtoForCommons.response.RegistrationResponse;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
 import com.vitaly.usersmanager.mapper.IndividualMapper;
@@ -33,9 +34,16 @@ public class IndividualsControllerV1 {
 
 
     @GetMapping("/{id}")
-    public Mono<TestIndividualDto> getIndividualById(@PathVariable UUID id) {
+    public Mono<IndividualInfoResponse> getIndividualById(@PathVariable UUID id) {
         return individualService.getById(id)
-                .map(individualMapper::toDto);
+                .map(individualMapper::toDto)
+                .flatMap(individualDto -> userService.getByIdWithAddress(individualDto.getUserId())
+                        .map(userMapper::toDto)
+                        .map(userDto -> IndividualInfoResponse.builder()
+                                .testIndividualDto(individualDto)
+                                .testUserDto(userDto)
+                                .build())
+                );
     }
 
     @PostMapping
@@ -56,7 +64,7 @@ public class IndividualsControllerV1 {
                 .onErrorResume(UserAlreadyExistsException.class, ex -> Mono.error(new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage())));
     }
 
-    //what status we need to return? 204 yes
+
     @DeleteMapping("/{id}")
     public Mono<?> deleteIndividual(@PathVariable UUID id) {
         return individualService.getById(id)
@@ -93,21 +101,4 @@ public class IndividualsControllerV1 {
                 .passportNumber(dtoForRegistration.getPassportNumber())
                 .build();
     }
-
-    //    @PostMapping
-//    public Mono<RegistrationResponse> createIndividual(@RequestBody IndividualRegistrationDto dtoForRegistration) {
-//        TestUserDto userForRegistration = extractUserDto(dtoForRegistration);
-//        TestIndividualDto individualForRegistration = extractIndividualDto(dtoForRegistration);
-//        individualForRegistration.toBuilder()
-//                .userId(userForRegistration.getId())
-//                .build();
-//
-//        return userService.save(userMapper.toEntity(userForRegistration))
-//                .then(individualService.save(individualMapper.toEntity(individualForRegistration)))
-//                .thenReturn(RegistrationResponse.builder()
-//                        .individualId(individualForRegistration.getId())
-//                        .message("Individual registration is successful!")
-//                        .build())
-//            .onErrorResume(UserAlreadyExistsException.class, ex -> Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage())));
-//    }
 }

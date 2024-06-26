@@ -29,8 +29,8 @@ public class MerchantMemberInvitationEntity implements Persistable<UUID> {
   private String email;
 
 
-    @Override
-    public boolean isNew() {
-        return (id == null);
-    }
+  @Override
+  public boolean isNew() {
+    return (createdAt == null);
+  }
 }

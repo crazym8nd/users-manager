@@ -26,10 +26,10 @@ public class UserActionsHistoryEntity implements Persistable<UUID> {
     private UUID userId;
     private String reason;
 
-    private String changedValues; // TODO: how to implement this type from postgres jsonb type ??
+    private String changedValues;
 
     @Override
     public boolean isNew() {
-        return (id == null);
+        return (createdAt == null);
     }
 }

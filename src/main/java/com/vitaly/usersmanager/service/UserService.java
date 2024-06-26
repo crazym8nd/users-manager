@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface UserService extends GenericService<UserEntity, UUID> {
     Mono<Boolean> checkEmailForUnique(String email);
     Mono<Boolean> checkPhoneForUnique(String phoneNumber);
+    Mono<UserEntity> getByIdWithAddress(UUID uuid);
 }

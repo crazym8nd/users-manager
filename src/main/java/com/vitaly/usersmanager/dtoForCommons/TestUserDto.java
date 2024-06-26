@@ -26,6 +26,6 @@ public class TestUserDto {
     private String lastName;
     private LocalDateTime verifiedAt;
     private boolean filled;
-    private UUID addressId;
+    private AddressDto address;
 
 }

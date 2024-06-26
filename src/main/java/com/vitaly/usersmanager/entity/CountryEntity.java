@@ -28,6 +28,6 @@ public class CountryEntity implements Persistable<Long> {
 
     @Override
     public boolean isNew() {
-        return (id == null);
+        return (createdAt == null);
     }
 }
