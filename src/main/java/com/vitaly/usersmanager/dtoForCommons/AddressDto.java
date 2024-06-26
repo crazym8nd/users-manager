@@ -13,10 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressDto {
-    private Long countryId;
     private String address;
     private String zipCode;
     private String city;
     private String state;
+
+    private CountryDto country;
 
 }

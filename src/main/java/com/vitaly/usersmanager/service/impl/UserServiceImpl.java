@@ -3,8 +3,8 @@ package com.vitaly.usersmanager.service.impl;
 import com.vitaly.usersmanager.entity.EntityStatus;
 import com.vitaly.usersmanager.entity.UserEntity;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
-import com.vitaly.usersmanager.repository.AddressRepository;
 import com.vitaly.usersmanager.repository.UserRepository;
+import com.vitaly.usersmanager.service.AddressService;
 import com.vitaly.usersmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final AddressRepository addressRepository;
+    private final AddressService addressService;
     private final UserRepository userRepository;
 
     @Override
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
   @Override
     public Mono<UserEntity> getByIdWithAddress(UUID uuid) {
         return userRepository.findById(uuid)
-                .flatMap(userEntity -> addressRepository.findById(userEntity.getAddressId())
+                .flatMap(userEntity -> addressService.getByIdWithCountry(userEntity.getAddressId())
                         .map(addressEntity -> {
                             userEntity.setAddress(addressEntity);
                             return userEntity;
