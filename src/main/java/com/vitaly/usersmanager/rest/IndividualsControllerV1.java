@@ -11,6 +11,7 @@ import com.vitaly.usersmanager.mapper.IndividualMapper;
 import com.vitaly.usersmanager.mapper.UserMapper;
 import com.vitaly.usersmanager.service.IndividualService;
 import com.vitaly.usersmanager.service.PersonService;
+import com.vitaly.usersmanager.service.UserActionsHistoryService;
 import com.vitaly.usersmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,8 @@ public class IndividualsControllerV1 {
     private final UserService userService;
     private final UserMapper userMapper;
     private final PersonService personService;
+
+    private final UserActionsHistoryService userActionsHistoryService;
 
 
     @GetMapping("/{id}")
@@ -57,6 +60,7 @@ public class IndividualsControllerV1 {
                             TestIndividualDto individualForRegistration = personService.extractIndividualDto(dtoForRegistration);
                             individualForRegistration.setUserId(savedUser.getId());
                             return individualService.save(individualMapper.toEntity(individualForRegistration))
+                                    .then(userActionsHistoryService.createHistory(savedUser))
                                     .thenReturn(RegistrationResponse.builder()
                                             .individualId(individualForRegistration.getId())
                                             .message("Individual registration is successful!")

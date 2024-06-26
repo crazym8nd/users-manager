@@ -6,6 +6,7 @@ import com.vitaly.usersmanager.exceptionhandling.NotFoundException;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
 import com.vitaly.usersmanager.repository.UserRepository;
 import com.vitaly.usersmanager.service.AddressService;
+import com.vitaly.usersmanager.service.UserActionsHistoryService;
 import com.vitaly.usersmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final AddressService addressService;
     private final UserRepository userRepository;
+    private final UserActionsHistoryService userActionsHistoryService;
 
     @Override
     public Mono<UserEntity> getById(UUID uuid) {
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService {
         return checkEmailForUnique(userEntity.getEmail())
                 .then(checkPhoneForUnique(userEntity.getPhoneNumber()))
                 .then(userRepository.save(userEntity.toBuilder()
-                        .status(EntityStatus.ACTIVE)
+                                .status(EntityStatus.ACTIVE)
                         .build()));
     }
 

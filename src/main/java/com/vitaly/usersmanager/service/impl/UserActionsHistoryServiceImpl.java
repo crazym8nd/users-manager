@@ -3,10 +3,13 @@ package com.vitaly.usersmanager.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vitaly.usersmanager.entity.EntityStatus;
 import com.vitaly.usersmanager.entity.UserActionsHistoryEntity;
+import com.vitaly.usersmanager.entity.UserEntity;
 import com.vitaly.usersmanager.exceptionhandling.NotFoundException;
 import com.vitaly.usersmanager.repository.UserActionsHistoryRepository;
 import com.vitaly.usersmanager.service.UserActionsHistoryService;
+import io.r2dbc.postgresql.codec.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,10 +28,6 @@ public class UserActionsHistoryServiceImpl implements UserActionsHistoryService 
     @Override
     public Mono<UserActionsHistoryEntity> getById(UUID uuid) {
         return userActionsHistoryRepository.findById(uuid)
-                .doOnNext(entity -> {
-                    JsonNode jsonNode = convertToJsonObject(entity.getChangedValues());
-                    entity.setChangedValues(jsonNode.toString());
-                })
                 .switchIfEmpty(Mono.error(new NotFoundException("UserActionsHistory with id: " + uuid + " not found")));
     }
 
@@ -41,9 +40,9 @@ public class UserActionsHistoryServiceImpl implements UserActionsHistoryService 
 
     @Override
     public Mono<UserActionsHistoryEntity> save(UserActionsHistoryEntity userActionsHistoryEntity) {
-        String jsonString = convertToJsonString(userActionsHistoryEntity.getChangedValues());
-        userActionsHistoryEntity.setChangedValues(jsonString);
-        return userActionsHistoryRepository.save(userActionsHistoryEntity);
+        return userActionsHistoryRepository.save(userActionsHistoryEntity.toBuilder()
+                .status(EntityStatus.ACTIVE)
+                .build());
     }
 
     @Override
@@ -69,5 +68,25 @@ public class UserActionsHistoryServiceImpl implements UserActionsHistoryService 
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert JSON string to object", e);
         }
+    }
+
+    @Override
+    public Mono<UserActionsHistoryEntity> createHistory(UserEntity userEntity) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString;
+        try {
+            jsonString = objectMapper.writeValueAsString(userEntity);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert object to JSON string", e);
+        }
+
+        log.info("JSON: {}", jsonString);
+        log.info("UserEntity: {}", userEntity);
+        Json json = Json.of(jsonString);
+        return save(UserActionsHistoryEntity.builder()
+                        .userId(userEntity.getId())
+                        .reason("SYSTEM")
+                .changedValues(json)
+                .build());
     }
 }
