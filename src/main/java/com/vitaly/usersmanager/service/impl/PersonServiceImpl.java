@@ -14,6 +14,7 @@ import com.vitaly.usersmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class PersonServiceImpl implements PersonService {
     private final UserMapper userMapper;
 
     @Override
+    @Transactional
     public Mono<UpdateRequestIndividualDto> updateInfo(UpdateRequestIndividualDto updateReqeustIndividualDto) {
         UUID userId = updateReqeustIndividualDto.getTestUserDto().getId();
         UUID individualId = updateReqeustIndividualDto.getTestIndividualDto().getId();
