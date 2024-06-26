@@ -1,6 +1,7 @@
 package com.vitaly.usersmanager.service.impl;
 
 import com.vitaly.usersmanager.entity.AddressEntity;
+import com.vitaly.usersmanager.entity.EntityStatus;
 import com.vitaly.usersmanager.repository.AddressRepository;
 import com.vitaly.usersmanager.repository.CountryRepository;
 import com.vitaly.usersmanager.service.AddressService;
@@ -31,7 +32,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Mono<AddressEntity> save(AddressEntity addressEntity) {
-        return addressRepository.save(addressEntity);
+        return addressRepository.save(addressEntity.toBuilder()
+                        .status(EntityStatus.ACTIVE)
+                .build());
     }
 
     @Override

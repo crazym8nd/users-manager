@@ -2,6 +2,7 @@ package com.vitaly.usersmanager.service.impl;
 
 import com.vitaly.usersmanager.entity.EntityStatus;
 import com.vitaly.usersmanager.entity.UserEntity;
+import com.vitaly.usersmanager.exceptionhandling.NotFoundException;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
 import com.vitaly.usersmanager.repository.UserRepository;
 import com.vitaly.usersmanager.service.AddressService;
@@ -31,13 +32,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Mono<UserEntity> getByIdWithAddress(UUID uuid) {
         return userRepository.findById(uuid)
-                .flatMap(userEntity -> addressService.getByIdWithCountry(userEntity.getAddressId())
-                        .map(addressEntity -> {
-                            userEntity.setAddress(addressEntity);
-                            return userEntity;
-                        }));
+                .flatMap(userEntity -> {
+                    if (userEntity.getAddressId() != null) {
+                        return addressService.getByIdWithCountry(userEntity.getAddressId())
+                                .map(addressEntity -> {
+                                    userEntity.setAddress(addressEntity);
+                                    return userEntity;
+                                })
+                                .switchIfEmpty(Mono.error(new NotFoundException("Address not found")));
+                    } else {
+                        return Mono.just(userEntity);
+                    }
+                });
     }
-
 
     @Override
     public Mono<UserEntity> update(UserEntity userEntity) {

@@ -4,13 +4,13 @@ import com.vitaly.usersmanager.dtoForCommons.IndividualRegistrationDto;
 import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
 import com.vitaly.usersmanager.dtoForCommons.TestUserDto;
 import com.vitaly.usersmanager.dtoForCommons.UpdateRequestIndividualDto;
+import com.vitaly.usersmanager.entity.AddressEntity;
 import com.vitaly.usersmanager.entity.IndividualEntity;
 import com.vitaly.usersmanager.entity.UserEntity;
+import com.vitaly.usersmanager.mapper.AddressMapper;
 import com.vitaly.usersmanager.mapper.IndividualMapper;
 import com.vitaly.usersmanager.mapper.UserMapper;
-import com.vitaly.usersmanager.service.IndividualService;
-import com.vitaly.usersmanager.service.PersonService;
-import com.vitaly.usersmanager.service.UserService;
+import com.vitaly.usersmanager.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,9 @@ public class PersonServiceImpl implements PersonService {
     private final IndividualMapper individualMapper;
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AddressMapper addressMapper;
+    private final AddressService addressService;
+    private final CountryService countryService;
 
     @Override
     @Transactional
@@ -36,8 +39,21 @@ public class PersonServiceImpl implements PersonService {
 
         UserEntity newUserInfo = userMapper.toEntity(updateReqeustIndividualDto.getTestUserDto());
         IndividualEntity newIndividualInfo = individualMapper.toEntity(updateReqeustIndividualDto.getTestIndividualDto());
+        AddressEntity newAddressInfo = newUserInfo.getAddress();
+        String name = newUserInfo.getAddress().getCountry().getName();
 
-        return userService.getByIdWithAddress(userId)
+
+        return countryService.findByName(name)
+                .map(country -> {
+                    newAddressInfo.setCountry(country);
+                    newAddressInfo.setCountryId(country.getId());
+                    return newAddressInfo;
+                })
+                .flatMap(addressService::save)
+                .flatMap(savedAddress -> {
+                    newUserInfo.setAddress(savedAddress);
+                    return userService.getByIdWithAddress(userId);
+                })
                 .flatMap(userToBeUpdated -> userService.update(
                         userToBeUpdated.toBuilder()
                                 .secretKey(newUserInfo.getSecretKey())
@@ -45,6 +61,7 @@ public class PersonServiceImpl implements PersonService {
                                 .email(newUserInfo.getEmail())
                                 .firstName(newUserInfo.getFirstName())
                                 .lastName(newUserInfo.getLastName())
+                                .addressId(newUserInfo.getAddress().getId())
                                 .build()
                 ))
                 .then(individualService.getById(individualId)

@@ -34,4 +34,9 @@ public class CountryServiceImpl implements CountryService {
         return countryRepository.findById(aLong)
                 .flatMap((country -> countryRepository.deleteById(country.getId()).thenReturn(country)));
     }
+
+    @Override
+    public Mono<CountryEntity> findByName(String name) {
+        return countryRepository.findByName(name);
+    }
 }
