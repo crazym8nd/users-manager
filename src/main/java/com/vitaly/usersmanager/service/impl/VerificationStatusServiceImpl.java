@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
@@ -23,7 +24,9 @@ public class VerificationStatusServiceImpl implements VerificationStatusService 
 
     @Override
     public Mono<VerificationStatusEntity> update(VerificationStatusEntity verificationStatusEntity) {
-        return verificationStatusRepository.save(verificationStatusEntity);
+        return verificationStatusRepository.save(verificationStatusEntity.toBuilder()
+                .updatedAt(LocalDateTime.now())
+                .build());
     }
 
     @Override

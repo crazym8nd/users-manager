@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
@@ -27,7 +28,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Mono<AddressEntity> update(AddressEntity addressEntity) {
-        return addressRepository.save(addressEntity);
+        return addressRepository.save(addressEntity.toBuilder()
+                .updatedAt(LocalDateTime.now())
+                .build());
     }
 
     @Override

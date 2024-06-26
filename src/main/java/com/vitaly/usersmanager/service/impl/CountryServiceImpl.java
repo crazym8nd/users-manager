@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,7 +23,9 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Mono<CountryEntity> update(CountryEntity countryEntity) {
-        return countryRepository.save(countryEntity);
+        return countryRepository.save(countryEntity.toBuilder()
+                .updatedAt(LocalDateTime.now())
+                .build());
     }
 
     @Override

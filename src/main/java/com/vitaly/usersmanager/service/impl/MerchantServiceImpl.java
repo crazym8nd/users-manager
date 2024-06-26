@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
@@ -24,7 +25,9 @@ public class MerchantServiceImpl implements MerchantService {
 
     @Override
     public Mono<MerchantEntity> update(MerchantEntity merchantEntity) {
-        return merchantRepository.save(merchantEntity);
+        return merchantRepository.save(merchantEntity.toBuilder()
+                .updatedAt(LocalDateTime.now())
+                .build());
     }
 
     @Override

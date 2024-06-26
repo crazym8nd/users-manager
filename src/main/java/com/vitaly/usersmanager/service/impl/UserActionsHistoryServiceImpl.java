@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
@@ -33,7 +34,9 @@ public class UserActionsHistoryServiceImpl implements UserActionsHistoryService 
 
     @Override
     public Mono<UserActionsHistoryEntity> update(UserActionsHistoryEntity userActionsHistoryEntity) {
-        return userActionsHistoryRepository.save(userActionsHistoryEntity);
+        return userActionsHistoryRepository.save(userActionsHistoryEntity.toBuilder()
+                .updatedAt(LocalDateTime.now())
+                .build());
     }
 
     @Override
