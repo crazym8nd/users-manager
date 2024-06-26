@@ -8,6 +8,7 @@ import com.vitaly.usersmanager.service.IndividualService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -46,5 +47,10 @@ public class IndividualServiceImpl implements IndividualService {
     public Mono<IndividualEntity> delete(UUID uuid) {
         return individualRepository.findById(uuid)
                 .flatMap((individual -> individualRepository.deleteById(individual.getId()).thenReturn(individual)));
+    }
+
+    @Override
+    public Flux<IndividualEntity> getAllNotVerifiedIndividuals() {
+        return individualRepository.findAllByVerifiedAtIsNull();
     }
 }
