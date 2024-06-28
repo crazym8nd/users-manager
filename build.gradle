@@ -38,7 +38,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.postgresql:r2dbc-postgresql'
 
-
+    implementation 'org.javers:javers-core:7.5.0'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'

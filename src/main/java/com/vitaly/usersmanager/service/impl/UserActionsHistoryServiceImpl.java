@@ -12,11 +12,17 @@ import com.vitaly.usersmanager.service.UserActionsHistoryService;
 import io.r2dbc.postgresql.codec.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.javers.core.Javers;
+import org.javers.core.diff.Diff;
+import org.javers.core.json.JsonConverter;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
@@ -24,6 +30,7 @@ import java.util.UUID;
 public class UserActionsHistoryServiceImpl implements UserActionsHistoryService {
 
     private final UserActionsHistoryRepository userActionsHistoryRepository;
+    private final Javers javers;
 
     @Override
     public Mono<UserActionsHistoryEntity> getById(UUID uuid) {
@@ -71,22 +78,41 @@ public class UserActionsHistoryServiceImpl implements UserActionsHistoryService 
     }
 
     @Override
-    public Mono<UserActionsHistoryEntity> createHistory(UserEntity userEntity) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString;
-        try {
-            jsonString = objectMapper.writeValueAsString(userEntity);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert object to JSON string", e);
-        }
+    public Mono<UserActionsHistoryEntity> createHistory(Mono<UserEntity> beforeUpdate, UserEntity afterUpdate) {
+        return beforeUpdate
+                .flatMap(userBefore -> {
+                            Diff diff = javers.compare(userBefore, afterUpdate);
+                            userBefore = afterUpdate;
+                            if (diff.hasChanges()) {
+                                JsonConverter jsonConverter = javers.getJsonConverter();
+                                String changes = jsonConverter.toJson(diff);
+                                ObjectMapper objectMapper = new ObjectMapper();
+                                try {
+                                    JsonNode rootNode = objectMapper.readTree(changes);
+                                    JsonNode changesNode = rootNode.get("changes");
 
-        log.info("JSON: {}", jsonString);
-        log.info("UserEntity: {}", userEntity);
-        Json json = Json.of(jsonString);
-        return save(UserActionsHistoryEntity.builder()
-                        .userId(userEntity.getId())
-                        .reason("SYSTEM")
-                .changedValues(json)
-                .build());
+                                    Map<String, String> changedFields = StreamSupport.stream(changesNode.spliterator(), false)
+                                            .filter(node -> node.get("changeType").asText().equals("ValueChange"))
+                                            .collect(Collectors.toMap(
+                                                    node -> node.get("property").asText(),
+                                                    node -> node.get("right").asText()
+                                            ));
+
+                                    String changedFieldsJson = objectMapper.writeValueAsString(changedFields);
+
+                                    UserActionsHistoryEntity createdHistory = UserActionsHistoryEntity.builder()
+                                            .changedValues(Json.of(changedFieldsJson))
+                                            .build();
+                                    return userActionsHistoryRepository.save(createdHistory);
+                                } catch (JsonProcessingException e) {
+                                    return Mono.error(new RuntimeException("Failed to parse Diff JSON string", e));
+                                }
+
+                            } else {
+                                return Mono.just(UserActionsHistoryEntity.builder()
+                                        .build());
+                            }
+                        }
+                );
     }
 }

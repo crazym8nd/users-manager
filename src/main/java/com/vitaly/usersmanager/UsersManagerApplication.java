@@ -11,8 +11,6 @@ public class UsersManagerApplication {
     public static void main(String[] args) {
         SpringApplication.run(UsersManagerApplication.class, args);
     }
-    //TODO: job to mark filled to true
-    //TODO: job to mock verification process
     //TODO: move dto package to other project and import it as dependency
     //TODO: add service and integration tests for individual
 }

@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface UserActionsHistoryService extends GenericService<UserActionsHistoryEntity, UUID> {
 
-    Mono<UserActionsHistoryEntity> createHistory(UserEntity userEntity);
+    Mono<UserActionsHistoryEntity> createHistory(Mono<UserEntity> beforeUpdate,UserEntity afterUpdate);
 }
