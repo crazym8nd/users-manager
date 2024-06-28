@@ -19,13 +19,14 @@ import java.util.UUID;
 public class VerificationStatusEntity implements Persistable<UUID> {
     @Id
     private UUID id;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private EntityStatus status;
     private UUID userId;
     private String userType; // individual | merchant
     private String details;
     private String verificationStatus;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
 
     @Override
     public boolean isNew() {

@@ -20,18 +20,18 @@ import java.util.UUID;
 public class AddressEntity implements Persistable<UUID> {
     @Id
     private UUID id;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private EntityStatus status;
     private Long countryId;
     private String address;
     private String zipCode;
     private String city;
     private String state;
 
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
+
     @Transient
     private CountryEntity country;
-
 
     @Override
     public boolean isNew() {

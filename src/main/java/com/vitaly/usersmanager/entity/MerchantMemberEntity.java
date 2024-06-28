@@ -19,10 +19,10 @@ import java.util.UUID;
 public class MerchantMemberEntity implements Persistable<UUID> {
     @Id
     private UUID id;
-
     private UUID userId;
     private UUID merchantId;
     private String memberRole;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private EntityStatus status;

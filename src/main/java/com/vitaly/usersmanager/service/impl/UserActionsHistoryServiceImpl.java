@@ -64,7 +64,6 @@ public class UserActionsHistoryServiceImpl implements UserActionsHistoryService 
         return beforeUpdate
                 .flatMap(userBefore -> {
                             Diff differences = javers.compare(userBefore, afterUpdate);
-                            userBefore = afterUpdate;
                             if (differences.hasChanges()) {
                                 JsonConverter jsonConverter = javers.getJsonConverter();
                                 String changes = jsonConverter.toJson(differences);

@@ -18,13 +18,13 @@ import java.time.LocalDateTime;
 public class CountryEntity implements Persistable<Long> {
     @Id
     private Long id;
+    private String name;
+    private String alpha2;
+    private String alpha3;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private EntityStatus status;
-    private String name;
-    private String alpha2;
-    private String alpha3;
 
     @Override
     public boolean isNew() {

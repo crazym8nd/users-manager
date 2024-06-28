@@ -20,10 +20,10 @@ import java.util.UUID;
 public class IndividualEntity implements Persistable<UUID> {
     @Id
     private UUID id;
-
     private UUID userId;
     private String passportNumber;
     private LocalDateTime verifiedAt;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private EntityStatus status;

@@ -22,13 +22,13 @@ public class UserActionsHistoryEntity implements Persistable<UUID> {
 
     @Id
     private UUID id;
+    private UUID userId;
+    private String reason;
+    private Json changedValues;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private EntityStatus status;
-    private UUID userId;
-    private String reason;
-
-    private Json changedValues;
 
     @Transient
     private UserEntity user;

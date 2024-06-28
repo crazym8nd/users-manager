@@ -19,16 +19,16 @@ import java.util.UUID;
 public class MerchantEntity implements Persistable<UUID> {
     @Id
     private UUID id;
-
     private UUID creatorId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private EntityStatus status;
     private String merchantName;
     private String email;
     private String phoneNumber;
     private LocalDateTime verifiedAt;
     private Boolean filled;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
 
     @Override
     public boolean isNew() {

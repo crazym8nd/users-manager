@@ -8,12 +8,11 @@ import com.crazym8nd.commonsdto.dto.response.RegistrationResponse;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
 import com.vitaly.usersmanager.mapper.IndividualMapper;
 import com.vitaly.usersmanager.mapper.UserMapper;
-import com.vitaly.usersmanager.repository.UserRepository;
 import com.vitaly.usersmanager.service.IndividualService;
 import com.vitaly.usersmanager.service.PersonService;
 import com.vitaly.usersmanager.service.UserActionsHistoryService;
 import com.vitaly.usersmanager.service.UserService;
-import com.vitaly.usersmanager.service.impl.UserServiceImpl;
+import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,10 +34,7 @@ public class IndividualsControllerV1 {
     private final UserService userService;
     private final UserMapper userMapper;
     private final PersonService personService;
-
     private final UserActionsHistoryService userActionsHistoryService;
-    private final UserServiceImpl userServiceImpl;
-    private final UserRepository userRepository;
 
 
     @GetMapping("/{id}")
@@ -57,6 +53,12 @@ public class IndividualsControllerV1 {
     @PostMapping
     public Mono<RegistrationResponse> createIndividual(@RequestBody IndividualRegistrationDto dtoForRegistration) {
         return Mono.just(dtoForRegistration)
+                .flatMap(dto -> {
+                    if (!isValidDto(dto)) {
+                        return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request body"));
+                    }
+                    return Mono.just(dto);
+                })
                 .map(personService::extractUserDto)
                 .flatMap(userForRegistration -> userService.save(userMapper.toEntity(userForRegistration))
                         .flatMap(savedUser -> {
@@ -90,5 +92,10 @@ public class IndividualsControllerV1 {
         } else {
             return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST));
         }
+    }
+
+    private boolean isValidDto(@Nonnull IndividualRegistrationDto dto) {
+       return dto.getFirstName() != null && dto.getLastName() != null &&
+       dto.getPassportNumber() != null && dto.getSecretKey() != null && dto.getEmail() != null && dto.getPhoneNumber() != null;
     }
  }

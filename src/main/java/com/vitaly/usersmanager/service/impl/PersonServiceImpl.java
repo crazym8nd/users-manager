@@ -7,7 +7,6 @@ import com.crazym8nd.commonsdto.dto.UserDto;
 import com.vitaly.usersmanager.entity.AddressEntity;
 import com.vitaly.usersmanager.entity.IndividualEntity;
 import com.vitaly.usersmanager.entity.UserEntity;
-import com.vitaly.usersmanager.mapper.AddressMapper;
 import com.vitaly.usersmanager.mapper.IndividualMapper;
 import com.vitaly.usersmanager.mapper.UserMapper;
 import com.vitaly.usersmanager.service.*;
@@ -27,7 +26,6 @@ public class PersonServiceImpl implements PersonService {
     private final IndividualMapper individualMapper;
     private final UserService userService;
     private final UserMapper userMapper;
-    private final AddressMapper addressMapper;
     private final AddressService addressService;
     private final CountryService countryService;
 

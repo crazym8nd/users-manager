@@ -21,11 +21,7 @@ import java.util.UUID;
 public class UserEntity implements Persistable<UUID> {
     @Id
     private UUID id;
-
     private String secretKey;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private EntityStatus status;
     private String phoneNumber;
     private String email;
     private String firstName;
@@ -33,6 +29,10 @@ public class UserEntity implements Persistable<UUID> {
     private LocalDateTime verifiedAt;
     private boolean filled;
     private UUID addressId;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private EntityStatus status;
 
     @Transient
     private AddressEntity address;

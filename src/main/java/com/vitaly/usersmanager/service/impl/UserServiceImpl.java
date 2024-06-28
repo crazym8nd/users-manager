@@ -15,8 +15,6 @@ import com.vitaly.usersmanager.service.UserService;
 import io.r2dbc.postgresql.codec.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.javers.core.Javers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,9 +30,6 @@ public class UserServiceImpl implements UserService {
     private final AddressService addressService;
     private final UserRepository userRepository;
     private final UserActionsHistoryService userActionsHistoryService;
-
-    @Autowired
-    private Javers javers;
     @Override
     public Mono<UserEntity> getById(UUID uuid) {
         return userRepository.findById(uuid)
@@ -115,7 +110,8 @@ public class UserServiceImpl implements UserService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            Map<String, String> changedFields = objectMapper.convertValue(createdUserEntity, new TypeReference<Map<String, String>>() {});
+            Map<String, String> changedFields = objectMapper.convertValue(createdUserEntity, new TypeReference<>() {
+            });
             String changedFieldsJson = objectMapper.writeValueAsString(changedFields);
 
             return UserActionsHistoryEntity.builder()

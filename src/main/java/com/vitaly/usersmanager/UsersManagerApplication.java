@@ -11,6 +11,5 @@ public class UsersManagerApplication {
     public static void main(String[] args) {
         SpringApplication.run(UsersManagerApplication.class, args);
     }
-    //TODO: move dto package to other project and import it as dependency
-    //TODO: add service and integration tests for individual
+    //TODO: add service unit tests
 }
