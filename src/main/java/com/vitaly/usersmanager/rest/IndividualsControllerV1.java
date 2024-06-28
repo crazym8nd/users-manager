@@ -1,13 +1,10 @@
 package com.vitaly.usersmanager.rest;
 
-
-import com.vitaly.usersmanager.dtoForCommons.IndividualRegistrationDto;
-import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
-import com.vitaly.usersmanager.dtoForCommons.UpdateRequestIndividualDto;
-import com.vitaly.usersmanager.dtoForCommons.response.IndividualInfoResponse;
-import com.vitaly.usersmanager.dtoForCommons.response.RegistrationResponse;
-import com.vitaly.usersmanager.entity.EntityStatus;
-import com.vitaly.usersmanager.entity.UserEntity;
+import com.crazym8nd.commonsdto.dto.IndividualDto;
+import com.crazym8nd.commonsdto.dto.IndividualRegistrationDto;
+import com.crazym8nd.commonsdto.dto.UpdateRequestIndividualDto;
+import com.crazym8nd.commonsdto.dto.response.IndividualInfoResponse;
+import com.crazym8nd.commonsdto.dto.response.RegistrationResponse;
 import com.vitaly.usersmanager.exceptionhandling.UserAlreadyExistsException;
 import com.vitaly.usersmanager.mapper.IndividualMapper;
 import com.vitaly.usersmanager.mapper.UserMapper;
@@ -25,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -52,8 +48,8 @@ public class IndividualsControllerV1 {
                 .flatMap(individualDto -> userService.getByIdWithAddress(individualDto.getUserId())
                         .map(userMapper::toDto)
                         .map(userDto -> IndividualInfoResponse.builder()
-                                .testIndividualDto(individualDto)
-                                .testUserDto(userDto)
+                                .individualDto(individualDto)
+                                .userDto(userDto)
                                 .build())
                 );
     }
@@ -64,7 +60,7 @@ public class IndividualsControllerV1 {
                 .map(personService::extractUserDto)
                 .flatMap(userForRegistration -> userService.save(userMapper.toEntity(userForRegistration))
                         .flatMap(savedUser -> {
-                            TestIndividualDto individualForRegistration = personService.extractIndividualDto(dtoForRegistration);
+                            IndividualDto individualForRegistration = personService.extractIndividualDto(dtoForRegistration);
                             individualForRegistration.setUserId(savedUser.getId());
                             return individualService.save(individualMapper.toEntity(individualForRegistration))
                                     .then(userActionsHistoryService.createHistory(Mono.empty(),savedUser))
@@ -89,31 +85,10 @@ public class IndividualsControllerV1 {
 
     @PutMapping("/{id}")
     public Mono<?> updateIndividual(@PathVariable UUID id, @RequestBody UpdateRequestIndividualDto updateIndividualDto) {
-        if (id.equals(updateIndividualDto.getTestIndividualDto().getId())) {
+        if (id.equals(updateIndividualDto.getIndividualDto().getId())) {
             return personService.updateInfo(updateIndividualDto);
         } else {
             return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST));
         }
-    }
-
-    @GetMapping
-    public Mono<?> test(){
-        UserEntity entity = UserEntity.builder()
-                .id(UUID.fromString("db697c16-ee00-470e-ac67-1b421f826fee"))
-                .secretKey("testassssdasd")
-                .updatedAt(LocalDateTime.now())
-                .firstName("Hisaaary")
-                .lastName("Explssttrer")
-                .verifiedAt(LocalDateTime.now())
-                .phoneNumber("89166123122")
-                .email("psogggdasd@email.com")
-                .status(EntityStatus.ACTIVE)
-                .filled(false)
-                .addressId(null)
-                .build();
-        Mono<UserEntity> userMono = userService.getById(UUID.fromString("db697c16-ee00-470e-ac67-1b421f826fee"));
-
-        return userActionsHistoryService.createHistory(userMono,entity)
-                .thenReturn("OK");
     }
  }

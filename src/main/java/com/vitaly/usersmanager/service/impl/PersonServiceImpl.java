@@ -1,9 +1,9 @@
 package com.vitaly.usersmanager.service.impl;
 
-import com.vitaly.usersmanager.dtoForCommons.IndividualRegistrationDto;
-import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
-import com.vitaly.usersmanager.dtoForCommons.TestUserDto;
-import com.vitaly.usersmanager.dtoForCommons.UpdateRequestIndividualDto;
+import com.crazym8nd.commonsdto.dto.IndividualDto;
+import com.crazym8nd.commonsdto.dto.IndividualRegistrationDto;
+import com.crazym8nd.commonsdto.dto.UpdateRequestIndividualDto;
+import com.crazym8nd.commonsdto.dto.UserDto;
 import com.vitaly.usersmanager.entity.AddressEntity;
 import com.vitaly.usersmanager.entity.IndividualEntity;
 import com.vitaly.usersmanager.entity.UserEntity;
@@ -34,11 +34,11 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public Mono<UpdateRequestIndividualDto> updateInfo(UpdateRequestIndividualDto updateReqeustIndividualDto) {
-        UUID userId = updateReqeustIndividualDto.getTestUserDto().getId();
-        UUID individualId = updateReqeustIndividualDto.getTestIndividualDto().getId();
+        UUID userId = updateReqeustIndividualDto.getUserDto().getId();
+        UUID individualId = updateReqeustIndividualDto.getIndividualDto().getId();
 
-        UserEntity newUserInfo = userMapper.toEntity(updateReqeustIndividualDto.getTestUserDto());
-        IndividualEntity newIndividualInfo = individualMapper.toEntity(updateReqeustIndividualDto.getTestIndividualDto());
+        UserEntity newUserInfo = userMapper.toEntity(updateReqeustIndividualDto.getUserDto());
+        IndividualEntity newIndividualInfo = individualMapper.toEntity(updateReqeustIndividualDto.getIndividualDto());
         AddressEntity newAddressInfo = newUserInfo.getAddress();
         String name = newUserInfo.getAddress().getCountry().getName();
 
@@ -75,8 +75,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public TestUserDto extractUserDto(IndividualRegistrationDto dtoForRegistration) {
-        return TestUserDto.builder()
+    public UserDto extractUserDto(IndividualRegistrationDto dtoForRegistration) {
+        return UserDto.builder()
                 .id(UUID.randomUUID())
                 .secretKey(dtoForRegistration.getSecretKey())
                 .phoneNumber(dtoForRegistration.getPhoneNumber())
@@ -87,8 +87,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public TestIndividualDto extractIndividualDto(IndividualRegistrationDto dtoForRegistration) {
-        return TestIndividualDto.builder()
+    public IndividualDto extractIndividualDto(IndividualRegistrationDto dtoForRegistration) {
+        return IndividualDto.builder()
                 .id(UUID.randomUUID())
                 .passportNumber(dtoForRegistration.getPassportNumber())
                 .build();

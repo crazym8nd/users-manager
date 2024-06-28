@@ -1,6 +1,6 @@
 package com.vitaly.usersmanager.mapper;
 
-import com.vitaly.usersmanager.dtoForCommons.VerificationStatusDto;
+import com.crazym8nd.commonsdto.dto.VerificationStatusDto;
 import com.vitaly.usersmanager.entity.VerificationStatusEntity;
 import org.mapstruct.Mapper;
 

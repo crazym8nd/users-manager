@@ -1,6 +1,7 @@
 package com.vitaly.usersmanager.mapper;
 
-import com.vitaly.usersmanager.dtoForCommons.MerchantDto;
+
+import com.crazym8nd.commonsdto.dto.MerchantDto;
 import com.vitaly.usersmanager.entity.MerchantEntity;
 import org.mapstruct.Mapper;
 

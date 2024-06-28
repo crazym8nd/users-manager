@@ -1,6 +1,6 @@
 package com.vitaly.usersmanager.mapper;
 
-import com.vitaly.usersmanager.dtoForCommons.AddressDto;
+import com.crazym8nd.commonsdto.dto.AddressDto;
 import com.vitaly.usersmanager.entity.AddressEntity;
 import org.mapstruct.Mapper;
 

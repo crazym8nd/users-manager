@@ -1,15 +1,16 @@
 package com.vitaly.usersmanager.service;
 
-import com.vitaly.usersmanager.dtoForCommons.IndividualRegistrationDto;
-import com.vitaly.usersmanager.dtoForCommons.TestIndividualDto;
-import com.vitaly.usersmanager.dtoForCommons.TestUserDto;
-import com.vitaly.usersmanager.dtoForCommons.UpdateRequestIndividualDto;
+
+import com.crazym8nd.commonsdto.dto.IndividualDto;
+import com.crazym8nd.commonsdto.dto.IndividualRegistrationDto;
+import com.crazym8nd.commonsdto.dto.UpdateRequestIndividualDto;
+import com.crazym8nd.commonsdto.dto.UserDto;
 import reactor.core.publisher.Mono;
 
 public interface PersonService {
     Mono<UpdateRequestIndividualDto> updateInfo(UpdateRequestIndividualDto updateRequestIndividualDto);
 
-    TestIndividualDto extractIndividualDto(IndividualRegistrationDto dtoForRegistration);
+    IndividualDto extractIndividualDto(IndividualRegistrationDto dtoForRegistration);
 
-    TestUserDto extractUserDto(IndividualRegistrationDto dtoForRegistration);
+    UserDto extractUserDto(IndividualRegistrationDto dtoForRegistration);
 }
