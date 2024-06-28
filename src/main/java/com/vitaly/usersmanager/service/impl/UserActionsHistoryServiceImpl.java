@@ -59,33 +59,15 @@ public class UserActionsHistoryServiceImpl implements UserActionsHistoryService 
                         .thenReturn(userActionsHistory)));
     }
 
-    private String convertToJsonString(Object object) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert object to JSON string", e);
-        }
-    }
-
-    private JsonNode convertToJsonObject(String jsonString) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readTree(jsonString);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert JSON string to object", e);
-        }
-    }
-
     @Override
     public Mono<UserActionsHistoryEntity> createHistory(Mono<UserEntity> beforeUpdate, UserEntity afterUpdate) {
         return beforeUpdate
                 .flatMap(userBefore -> {
-                            Diff diff = javers.compare(userBefore, afterUpdate);
+                            Diff differences = javers.compare(userBefore, afterUpdate);
                             userBefore = afterUpdate;
-                            if (diff.hasChanges()) {
+                            if (differences.hasChanges()) {
                                 JsonConverter jsonConverter = javers.getJsonConverter();
-                                String changes = jsonConverter.toJson(diff);
+                                String changes = jsonConverter.toJson(differences);
                                 ObjectMapper objectMapper = new ObjectMapper();
                                 try {
                                     JsonNode rootNode = objectMapper.readTree(changes);
@@ -101,6 +83,10 @@ public class UserActionsHistoryServiceImpl implements UserActionsHistoryService 
                                     String changedFieldsJson = objectMapper.writeValueAsString(changedFields);
 
                                     UserActionsHistoryEntity createdHistory = UserActionsHistoryEntity.builder()
+                                            .status(EntityStatus.ACTIVE)
+                                            .updatedAt(LocalDateTime.now())
+                                            .userId(afterUpdate.getId())
+                                            .reason("SYSTEM")
                                             .changedValues(Json.of(changedFieldsJson))
                                             .build();
                                     return userActionsHistoryRepository.save(createdHistory);
